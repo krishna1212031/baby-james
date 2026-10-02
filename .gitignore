@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Android build outputs
+android/app/build/
+android/build/
+android/.gradle/
+android/local.properties
+android/captures/
+
+# iOS build outputs
+ios/App/Pods/
+ios/App/build/
+ios/App/DerivedData/
+
+# Signing keys and credentials - NEVER commit these
+*.jks
+*.keystore
+keystore.properties
+keystore-credentials.txt
+
+# Build logs / scratch
+gradle-build.log
+icon-preview.png
+
+# OS cruft
+.DS_Store
+Thumbs.db

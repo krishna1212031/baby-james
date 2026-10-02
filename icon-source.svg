@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108">
+  <rect width="108" height="108" fill="#FFF3D6"/>
+
+  <!-- Ball -->
+  <circle cx="72" cy="68" r="11" fill="#FF9F1C"/>
+  <path d="M66,59 Q72,68 66,77" stroke="#FFFFFF" stroke-width="1.5" fill="none"/>
+  <path d="M78,59 Q72,68 78,77" stroke="#FFFFFF" stroke-width="1.5" fill="none"/>
+  <path d="M61,68 L83,68" stroke="#FFFFFF" stroke-width="1.5" fill="none"/>
+
+  <!-- Back arm -->
+  <ellipse cx="30" cy="56" rx="5" ry="9" fill="#FFD9B3"/>
+
+  <!-- Legs -->
+  <ellipse cx="41" cy="80" rx="5" ry="7" fill="#4CC9F0"/>
+  <ellipse cx="59" cy="80" rx="5" ry="7" fill="#4CC9F0"/>
+
+  <!-- Body -->
+  <ellipse cx="50" cy="62" rx="13" ry="16" fill="#4CC9F0"/>
+
+  <!-- Reaching arm toward ball -->
+  <g transform="rotate(-35 50 50)">
+    <ellipse cx="50" cy="54" rx="5" ry="11" fill="#FFD9B3"/>
+  </g>
+
+  <!-- Head -->
+  <circle cx="50" cy="38" r="12" fill="#FFD9B3"/>
+
+  <!-- Hair tuft -->
+  <path d="M45,27 Q50,20 55,27 Q50,24 45,27 Z" fill="#5B3A29"/>
+
+  <!-- Cheeks -->
+  <ellipse cx="43" cy="41" rx="2.5" ry="1.8" fill="#FFB5A7"/>
+  <ellipse cx="57" cy="41" rx="2.5" ry="1.8" fill="#FFB5A7"/>
+
+  <!-- Eyes -->
+  <circle cx="44" cy="37" r="1.8" fill="#2A2A2A"/>
+  <circle cx="56" cy="37" r="1.8" fill="#2A2A2A"/>
+
+  <!-- Smile -->
+  <path d="M44,44 Q50,49 56,44" stroke="#2A2A2A" stroke-width="1.5" fill="none"/>
+</svg>

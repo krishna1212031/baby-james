@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Baby James</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="exitIconBtn" class="hidden">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="12" y1="3" x2="12" y2="11"></line>
+    <path d="M7 6.5a7 7 0 1 0 10 0"></path>
+  </svg>
+</div>
+
+<div id="settingsOverlay" class="overlay hidden">
+  <div class="panel">
+    <div class="scrollArea">
+      <div class="title">Choose age group</div>
+      <div class="bandToggleRow">
+        <button class="bandBtn" data-band="0-9m">0&ndash;9mo</button>
+        <button class="bandBtn" data-band="9-12m">9&ndash;12mo</button>
+        <button class="bandBtn" data-band="1-2y">1&ndash;2y</button>
+        <button class="bandBtn" data-band="2-3y">2&ndash;3y</button>
+        <button class="bandBtn" data-band="3y+">3y+</button>
+      </div>
+
+      <div class="title">Games to include</div>
+      <div class="gameToggleRow">
+        <button class="gameBtn" data-game="balloons">Balloons</button>
+        <button class="gameBtn" data-game="dot">Touch the Dot</button>
+        <button class="gameBtn" data-game="fireworks">Fireworks</button>
+        <button class="gameBtn" data-game="matchDots">Match the Dots</button>
+        <button class="gameBtn" data-game="dragDot">Drag the Dot</button>
+        <button class="gameBtn" data-game="bubbles">Bubbles</button>
+        <button class="gameBtn" data-game="peekaboo">Peekaboo</button>
+        <button class="gameBtn" data-game="fingerTrails">Finger Trails</button>
+        <button class="gameBtn" data-game="nightSky">Night Sky Stars</button>
+        <button class="gameBtn" data-game="animals">Animal Sounds</button>
+        <button class="gameBtn" data-game="musicalKeys">Musical Keys</button>
+      </div>
+
+      <button id="openCustomize">Customize&hellip;<span>Fine-tune each game individually</span></button>
+
+      <button id="openHelp">Help &amp; how it works</button>
+
+      <div class="hint">Tap the screen 3 times quickly anytime to reopen this menu.</div>
+
+      <button id="closeSettings">Done</button>
+    </div>
+  </div>
+</div>
+
+<div id="helpOverlay" class="overlay hidden">
+  <div class="panel">
+    <div class="scrollArea">
+      <div class="title">How this app works</div>
+      <div class="helpText">
+        <p>Hand the device to your child &mdash; every tap, drag, or poke anywhere on the screen makes something fun happen. There&rsquo;s no way to lose or do anything wrong.</p>
+        <p>To open this menu again later (change settings or quit), quickly tap the screen <strong>3 times in a row</strong>.</p>
+        <p>Pick your child&rsquo;s age group to set the right pace, and use <strong>Customize&hellip;</strong> to fine-tune any single game.</p>
+        <p>To close the app, open this menu and tap the exit icon in the top-right corner.</p>
+      </div>
+      <button id="closeHelp">Got it, let&rsquo;s play!</button>
+    </div>
+  </div>
+</div>
+
+<div id="customizeOverlay" class="overlay hidden">
+  <div class="panel">
+    <div class="scrollArea">
+      <div class="title">Customize</div>
+
+      <select id="customizeGameSelect"></select>
+
+      <div class="sliderRow">
+        <label>Speed</label>
+        <input type="range" id="speedSlider" min="0.25" max="1.5" step="0.05">
+        <span class="sliderValue" id="speedValue"></span>
+      </div>
+
+      <div class="sliderRow">
+        <label>Animation amount</label>
+        <input type="range" id="animationSlider" min="0.15" max="1.2" step="0.05">
+        <span class="sliderValue" id="animationValue"></span>
+      </div>
+
+      <div class="sliderRow">
+        <label>Number of items</label>
+        <input type="range" id="countSlider" min="1" max="6" step="1">
+        <span class="sliderValue" id="countValue"></span>
+      </div>
+
+      <div class="sliderRow">
+        <label>Size</label>
+        <input type="range" id="sizeSlider" min="0.7" max="1.6" step="0.05">
+        <span class="sliderValue" id="sizeValue"></span>
+      </div>
+
+      <button id="closeCustomize">Done</button>
+    </div>
+  </div>
+</div>
+
+<div id="exitConfirmOverlay" class="overlay hidden">
+  <div class="panel">
+    <div class="title">Quit the app?</div>
+    <button id="confirmExitYes">Yes, Exit</button>
+    <button id="confirmExitNo">Cancel</button>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
