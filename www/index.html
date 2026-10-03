@@ -9,7 +9,15 @@
 <body>
 <canvas id="c"></canvas>
 
-<div id="exitIconBtn" class="hidden">
+<div id="menuRevealIconBtn" class="cornerIconBtn menuIcon hidden">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="4" y1="7" x2="20" y2="7"></line>
+    <line x1="4" y1="12" x2="20" y2="12"></line>
+    <line x1="4" y1="17" x2="20" y2="17"></line>
+  </svg>
+</div>
+
+<div id="exitIconBtn" class="cornerIconBtn exitIcon hidden">
   <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
     <line x1="12" y1="3" x2="12" y2="11"></line>
     <path d="M7 6.5a7 7 0 1 0 10 0"></path>
@@ -47,7 +55,7 @@
 
       <button id="openHelp">Help &amp; how it works</button>
 
-      <div class="hint">Press and hold the top-right corner for a couple seconds until a small icon appears, then tap that icon 3 times to reopen this menu.</div>
+      <div class="hint">Press and hold the top-right corner for a couple seconds until a small menu icon appears, then tap it 3 times to reopen this menu.</div>
 
       <button id="closeSettings">Done</button>
     </div>
@@ -60,9 +68,9 @@
       <div class="title">How this app works</div>
       <div class="helpText">
         <p>Hand the device to your child &mdash; every tap, drag, or poke anywhere on the screen makes something fun happen. There&rsquo;s no way to lose or do anything wrong.</p>
-        <p>To open this menu again later (change settings or quit): press and hold the <strong>top-right corner</strong> of the screen for about 2 seconds until a small icon appears, then <strong>tap that icon 3 times</strong> quickly.</p>
+        <p>To open this menu again later (change settings or quit): press and hold the <strong>top-right corner</strong> of the screen for about 2 seconds until a small menu icon appears, then <strong>tap it 3 times</strong> quickly.</p>
         <p>Pick your child&rsquo;s age group to set the right pace, and use <strong>Customize&hellip;</strong> to fine-tune any single game.</p>
-        <p>Once you&rsquo;re in this menu, a single tap on that same icon closes the app (with a confirmation first).</p>
+        <p>Once you&rsquo;re in this menu, a separate exit icon appears in the same corner &mdash; a single tap on it closes the app (with a confirmation first).</p>
       </div>
       <button id="closeHelp">Got it, let&rsquo;s play!</button>
     </div>

@@ -17,7 +17,7 @@ canvas {
   height: 100vh;
 }
 
-#exitIconBtn {
+.cornerIconBtn {
   position: fixed;
   right: max(10px, env(safe-area-inset-right));
   top: max(10px, env(safe-area-inset-top));
@@ -27,17 +27,24 @@ canvas {
   align-items: center;
   justify-content: center;
   color: rgba(255,255,255,0.7);
-  background: rgba(120,20,20,0.35);
   border-radius: 50%;
   z-index: 40;
 }
 
-#exitIconBtn svg {
+.cornerIconBtn svg {
   pointer-events: none;
 }
 
-#exitIconBtn.hidden {
+.cornerIconBtn.hidden {
   display: none;
+}
+
+.cornerIconBtn.menuIcon {
+  background: rgba(30,70,140,0.4);
+}
+
+.cornerIconBtn.exitIcon {
+  background: rgba(120,20,20,0.35);
 }
 
 .overlay {

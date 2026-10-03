@@ -1320,15 +1320,17 @@
   }
 
   function isSettingsTarget(e) {
-    return !!(e.target.closest && e.target.closest('#settingsOverlay, #exitConfirmOverlay, #customizeOverlay, #helpOverlay, #exitIconBtn'));
+    return !!(e.target.closest && e.target.closest('#settingsOverlay, #exitConfirmOverlay, #customizeOverlay, #helpOverlay, #exitIconBtn, #menuRevealIconBtn'));
   }
 
   // ---------- Hold-to-reveal menu gesture (top-right corner) ----------
   // A baby's rapid-fire tapping/slapping during play is spread across the
   // whole screen and never sustains a continuous hold, and merely gripping
-  // this corner only reveals the icon - it takes a further precise triple-tap
-  // on that small icon (see the exitIconBtn listener below) to actually open
-  // the menu, which an incidental grip essentially never reproduces.
+  // this corner only reveals the menu icon - it takes a further precise
+  // triple-tap on that small icon (see the menuRevealIconBtn listener below)
+  // to actually open the menu, which an incidental grip essentially never
+  // reproduces. This menu icon is deliberately a different glyph/color from
+  // the exit icon shown once inside the menu, so the two are never confused.
   const TOPRIGHT_HOLD_MS = 1500;
   const ICON_IDLE_HIDE_MS = 6000;
 
@@ -1346,12 +1348,12 @@
     cornerHoldStartTime = 0;
   }
 
-  function revealExitIcon() {
-    exitIconBtn.classList.remove('hidden');
+  function revealMenuIcon() {
+    menuRevealIconBtn.classList.remove('hidden');
     iconTapTimestamps = [];
     clearTimeout(iconIdleHideTimer);
     iconIdleHideTimer = setTimeout(() => {
-      if (!settingsOpen) exitIconBtn.classList.add('hidden');
+      menuRevealIconBtn.classList.add('hidden');
     }, ICON_IDLE_HIDE_MS);
   }
 
@@ -1365,7 +1367,7 @@
     if (isSettingsTarget(e) || settingsOpen) return;
     const p = pointFromEvent(e);
 
-    if (exitIconBtn.classList.contains('hidden') && inTopRightZone(p.x, p.y)) {
+    if (menuRevealIconBtn.classList.contains('hidden') && inTopRightZone(p.x, p.y)) {
       cornerHoldPointerId = e.pointerId;
       cornerHoldStartTime = performance.now();
     }
@@ -1536,29 +1538,30 @@
     }
   }
 
+  const menuRevealIconBtn = document.getElementById('menuRevealIconBtn');
   const exitIconBtn = document.getElementById('exitIconBtn');
   const exitConfirmOverlay = document.getElementById('exitConfirmOverlay');
 
   const ICON_TAP_WINDOW_MS = 600;
   let iconTapTimestamps = [];
 
+  // Revealed via the corner-hold; requires a precise triple-tap on this small
+  // icon before actually opening the menu.
+  menuRevealIconBtn.addEventListener('pointerdown', e => {
+    e.stopPropagation();
+    const now = performance.now();
+    iconTapTimestamps.push(now);
+    iconTapTimestamps = iconTapTimestamps.filter(t => now - t < ICON_TAP_WINDOW_MS);
+    if (iconTapTimestamps.length >= 3) {
+      iconTapTimestamps = [];
+      clearTimeout(iconIdleHideTimer);
+      menuRevealIconBtn.classList.add('hidden');
+      openSettings();
+    }
+  });
+
   exitIconBtn.addEventListener('pointerdown', e => {
     e.stopPropagation();
-
-    if (!settingsOpen) {
-      // Revealed via the corner-hold but the menu isn't open yet: require a
-      // precise triple-tap on this small icon before actually opening it.
-      const now = performance.now();
-      iconTapTimestamps.push(now);
-      iconTapTimestamps = iconTapTimestamps.filter(t => now - t < ICON_TAP_WINDOW_MS);
-      if (iconTapTimestamps.length >= 3) {
-        iconTapTimestamps = [];
-        clearTimeout(iconIdleHideTimer);
-        openSettings();
-      }
-      return;
-    }
-
     exitConfirmOverlay.classList.remove('hidden');
     exitIconBtn.classList.add('hidden');
   });
@@ -1625,7 +1628,7 @@
     lastT = now;
 
     if (cornerHoldPointerId !== null && now - cornerHoldStartTime >= TOPRIGHT_HOLD_MS) {
-      revealExitIcon();
+      revealMenuIcon();
       cancelCornerHold();
     }
 
