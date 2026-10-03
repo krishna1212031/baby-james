@@ -30,7 +30,7 @@ SAFE BY DESIGN
 - No internet connection needed or used
 - No data collected, nothing sent anywhere
 - No in-app purchases
-- A simple triple-tap gesture opens the parent menu; a single tap won't exit or change anything by accident
+- A deliberate two-step gesture (press and hold a corner, then triple-tap a small icon) opens the parent menu, so your child can't stumble into it or exit the app by accident
 
 Made with love for parents who want their baby to have a few minutes of calm, happy screen time without any of the usual worries.
 
