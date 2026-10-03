@@ -1323,18 +1323,36 @@
     return !!(e.target.closest && e.target.closest('#settingsOverlay, #exitConfirmOverlay, #customizeOverlay, #helpOverlay, #exitIconBtn'));
   }
 
-  // Fast triple-tap anywhere (3 taps within 400ms) opens the parent menu.
-  // Kept short on purpose so normal, slightly-spaced-out gameplay tapping
-  // (popping balloons etc.) never accidentally triggers it.
-  let menuTapTimestamps = [];
-  function registerMenuGestureTap() {
-    const now = performance.now();
-    menuTapTimestamps.push(now);
-    menuTapTimestamps = menuTapTimestamps.filter(t => now - t < 400);
-    if (menuTapTimestamps.length >= 3) {
-      menuTapTimestamps = [];
-      openSettings();
-    }
+  // ---------- Hold-to-reveal menu gesture (top-right corner) ----------
+  // A baby's rapid-fire tapping/slapping during play is spread across the
+  // whole screen and never sustains a continuous hold, and merely gripping
+  // this corner only reveals the icon - it takes a further precise triple-tap
+  // on that small icon (see the exitIconBtn listener below) to actually open
+  // the menu, which an incidental grip essentially never reproduces.
+  const TOPRIGHT_HOLD_MS = 1500;
+  const ICON_IDLE_HIDE_MS = 6000;
+
+  let cornerHoldPointerId = null;
+  let cornerHoldStartTime = 0;
+  let iconIdleHideTimer = null;
+
+  function inTopRightZone(x, y) {
+    const zoneSize = Math.min(W, H) * 0.2;
+    return x >= W - zoneSize && y <= zoneSize;
+  }
+
+  function cancelCornerHold() {
+    cornerHoldPointerId = null;
+    cornerHoldStartTime = 0;
+  }
+
+  function revealExitIcon() {
+    exitIconBtn.classList.remove('hidden');
+    iconTapTimestamps = [];
+    clearTimeout(iconIdleHideTimer);
+    iconIdleHideTimer = setTimeout(() => {
+      if (!settingsOpen) exitIconBtn.classList.add('hidden');
+    }, ICON_IDLE_HIDE_MS);
   }
 
   // Pointer Events alone already cover mouse, touch and pen, including multi-touch
@@ -1346,13 +1364,22 @@
     ensureAudio();
     if (isSettingsTarget(e) || settingsOpen) return;
     const p = pointFromEvent(e);
+
+    if (exitIconBtn.classList.contains('hidden') && inTopRightZone(p.x, p.y)) {
+      cornerHoldPointerId = e.pointerId;
+      cornerHoldStartTime = performance.now();
+    }
+
     const mode = currentMode();
     if (mode.onPointerDown) mode.onPointerDown(e.pointerId, p.x, p.y);
     else handlePoint(p.x, p.y);
-    registerMenuGestureTap();
   });
 
   window.addEventListener('pointermove', e => {
+    if (cornerHoldPointerId === e.pointerId) {
+      const p = pointFromEvent(e);
+      if (!inTopRightZone(p.x, p.y)) cancelCornerHold();
+    }
     if (isSettingsTarget(e) || settingsOpen) return;
     const mode = currentMode();
     if (mode.onPointerMove) {
@@ -1362,6 +1389,7 @@
   });
 
   function endPointer(e) {
+    if (cornerHoldPointerId === e.pointerId) cancelCornerHold();
     if (isSettingsTarget(e) || settingsOpen) return;
     const mode = currentMode();
     if (mode.onPointerUp) {
@@ -1511,8 +1539,26 @@
   const exitIconBtn = document.getElementById('exitIconBtn');
   const exitConfirmOverlay = document.getElementById('exitConfirmOverlay');
 
+  const ICON_TAP_WINDOW_MS = 600;
+  let iconTapTimestamps = [];
+
   exitIconBtn.addEventListener('pointerdown', e => {
     e.stopPropagation();
+
+    if (!settingsOpen) {
+      // Revealed via the corner-hold but the menu isn't open yet: require a
+      // precise triple-tap on this small icon before actually opening it.
+      const now = performance.now();
+      iconTapTimestamps.push(now);
+      iconTapTimestamps = iconTapTimestamps.filter(t => now - t < ICON_TAP_WINDOW_MS);
+      if (iconTapTimestamps.length >= 3) {
+        iconTapTimestamps = [];
+        clearTimeout(iconIdleHideTimer);
+        openSettings();
+      }
+      return;
+    }
+
     exitConfirmOverlay.classList.remove('hidden');
     exitIconBtn.classList.add('hidden');
   });
@@ -1577,6 +1623,12 @@
   function frame(now) {
     const dt = Math.min(0.05, (now - lastT) / 1000);
     lastT = now;
+
+    if (cornerHoldPointerId !== null && now - cornerHoldStartTime >= TOPRIGHT_HOLD_MS) {
+      revealExitIcon();
+      cancelCornerHold();
+    }
+
     modeTimer += dt;
     if (modeTimer >= Settings.modeDuration) switchMode();
 
